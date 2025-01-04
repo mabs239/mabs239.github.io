@@ -1,0 +1,67 @@
+<!-- wp:image {"id":128,"sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large"><img src="https://bakarabu.files.wordpress.com/2015/10/bismillah.jpg?w=173" alt="" class="wp-image-128"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>There are a number of assemblers available when it comes to coding in machine speak. Here we compare the three key assemblers, Microsoft assembler (MASM), GNU assembler (GAS) and Netwide assembler (NASM). Their key differences and similarities are tabulated for easy code conversion.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>GAS is source first, destination second</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>MASM and NASM are destination first, source second</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>GAS denotes operand sizes with b, w, l and q suffixes on the instruction</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>GAS and NASM identifiers are case sensitive</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>MASM identifiers are not case sensitive by default, but can be by adding follwing line after the .MODEL directive<br><strong>option casemap: none</strong></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>NASM writes FPU stack registers as ST0, ST1, etc … without parenthesis, GAS/MASM usually write FPU stack registers as %st(1)/ST(1), %st(2)/ST(2), etc … with parentheses</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>GAS uses .EQU to set a symbol to an expression, NASM uses EQU, and MASM uses= or EQU</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>All three Assemblers can use single or double quotes for strings</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>MASM relies more on assumptions (e.g., data sizes), so sometimes interpreting what an instruction does can be difficult</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>NASM usually does not require a size directive for source operands, but a size directive can be used. A size directive is required for destination operands.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:syntaxhighlighter/code -->
+<pre class="wp-block-syntaxhighlighter-code">mov eax, [test]        ; source size not needed
+mov eax, DWORD [test]  ; but can be used
+mov DWORD [test], eax  ; size required for destination</pre>
+<!-- /wp:syntaxhighlighter/code -->
+
+<!-- wp:table {"hasFixedLayout":false} -->
+<figure class="wp-block-table"><table><tbody><tr><td><strong>Description</strong></td><td><strong>GAS</strong></td><td><strong>NASM</strong></td><td><strong>MASM</strong></td></tr><tr><td>Identifiers are case sensitive</td><td>Yes</td><td>Yes</td><td><strong>No</strong> by default<br><strong>Yes </strong>by adding the directive <br><strong>option casemap: none</strong></td></tr><tr><td>Operands sequence</td><td>opcode source, destination</td><td>opcode destination, source</td><td>opcode destination, source</td></tr><tr><td>Operand size</td><td>size of both destination and source operands defined </td><td>size required for destination operand, optional for source</td><td>size is assumed</td></tr><tr><td>Use of <strong>$</strong></td><td>immediate value prefix e.g. $7<br><br>variable prefix as address of the variable e.g.<br>movl $var, %eax</td><td>current address e.g.<br>.section<br><code>msg db 'Allah'</code><br><code>length equ $-msg</code><br><br>$$ keeps address of current section<br></td><td>current address counter</td></tr><tr><td>Use of dot (.)</td><td>directive prefix e.g. .long<br><br>current address counter<br><code>.section .data </code><br><code>string1: .string "Allah" </code><br><code>length: .long .-string1</code><br></td><td>Used for defining local labels<br><br><code>sum: mov ecx,10 ; </code><br><code>.loop: dec ecx ; </code><br><code>jg .loopstart </code><br><br>Here "sum" is top-level label and ".loopstart" is local label. "<code>.loop"</code> is treated as "s<code>um.loop".</code>&nbsp;</td><td>As offset of&nbsp;<em>field</em>&nbsp;within its structure&nbsp;<br><br>As macro directives<br></td></tr><tr><td>Clear a register (eax)</td><td>xorl $eax, $eax</td><td>xor eax, eax</td><td>xor eax, eax</td></tr><tr><td>Move contents of eax to esi</td><td>movi %eax, %esi</td><td>mov esi, eax</td><td>mov esi, eax</td></tr><tr><td>Move contents of ax to si</td><td>movw %ax, %si</td><td>mov si, ax</td><td>mov si, ax</td></tr><tr><td>Move immediate byte value 4 to al</td><td>movb $4, %al</td><td>mov al, 4</td><td>mov al, 4</td></tr><tr><td>Move contents of address 0xf into eax</td><td>movl 0x0f, %eax</td><td>mov eax, [0x0f]</td><td>mov eax, dsi [0fh]</td></tr><tr><td>Move contents of variable temp into eax</td><td>movl temp, %eax</td><td>mov eax, WORD [temp]</td><td>mov eax, temp</td></tr><tr><td>Move address of variable temp into eax using MOV</td><td>movl $temp, %eax</td><td>mov eax, temp</td><td>mov eax, OFFSET temp</td></tr><tr><td>Load address of variable temp into eax using LEA (32-bit)</td><td>leal temp, %eax</td><td>lea eax, [temp]</td><td>lea eax, temp</td></tr><tr><td>Load address of a variable into rax using LEA (64 bit)</td><td>leaq temp[%rip], %rax</td><td>lea rax, [rsi temp]</td><td>lea rax, temp</td></tr><tr><td>Move contents of eax into variable temp</td><td>movl $eax, temp</td><td>mov DWORD [temp], eax</td><td>mov temp, eax</td></tr><tr><td>Move immediate byte 2 into temp</td><td>movl $2, temp</td><td>mov BYTE [temp], 2</td><td>mov [temp], 2</td></tr><tr><td>Move immediate byte 2 into memory pointed by eax</td><td>movb $2, [%eax]</td><td>mov BYTE [eax], 2</td><td>move BYTE PTR [eax],2</td></tr><tr><td>Move immediate word value 4 into memory pointed to by eax</td><td>movw $4, [%eax]</td><td>mov WORD [eax], 4</td><td>mov WORD PTR [eax], 4</td></tr><tr><td>Move immediate doubleword value 6 into memory pointed to by eax</td><td>movl $6, [eax]</td><td>mov DWORD [eax], 6</td><td>mov DWORD PTR [eax], 6</td></tr><tr><td>Include file syntax</td><td>include "file.txt"</td><td>%include "file.ext"</td><td>INCLUDE file.txt</td></tr><tr><td>Identifier syntax</td><td>identifier: type value</td><td>identifier: type value</td><td>identifier type value</td></tr><tr><td>* Get size of array in bytes using current location counter [code directly after array declaration]</td><td>aSize: .long [. ~ array]</td><td>aSize: EQU [$-array]</td><td>aSize = [$-array]</td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td>Create and use a symbol with EQU</td><td>.equ temp, [2*6/3]<br>mov $temp, %eax</td><td>temp: EQU (2*6/3)<br>mov eax, temp</td><td>temp EQU (2*6/3)<br>mov eax, temp</td></tr><tr><td>Reserve 64 bytes of memory</td><td>.space 64</td><td>resb 64</td><td>db 64 DUP (?)</td></tr><tr><td>Create uninitiated 32-bit variable temp</td><td>.lcomm temp, 4</td><td>temp: read 1</td><td>temp DWORD ?</td></tr><tr><td>Create initialized 32-bit variable temp with value 5</td><td>temp: .long 5</td><td>temp: dd 5</td><td>temp DWORD 5</td></tr><tr><td>Create an array with 32-bit values</td><td>temp: .long 5, 10, 15</td><td>temp dd, 5, 10, 15</td><td>temp DWORD 5, 10, 15</td></tr><tr><td>Create "Aslam O Alaikum" string </td><td>identifier: .ascii "Aslam O Alaikum"</td><td>identifier: db 'Aslam O Alaikum'</td><td>identifier: BYTE "Aslam O Alaikum"</td></tr><tr><td>Create "Aslam O Alaikum" string with newline and null</td><td>identifier: .ascii "Aslam O Alaikum\n"</td><td>identifier: db 'Aslam O Alaikum', 10, 0</td><td>identifier: BYTE "Aslam O Alaikum", 10, 0</td></tr><tr><td>Function structure</td><td>identifier:<br>. . .<br>ret</td><td>identifier:<br>. . .<br>ret</td><td>identifier: PROC<br>. . .<br>ret<br>identifier: ENDP</td></tr><tr><td>Program segments (sections)</td><td>.data<br>.bss<br>.text</td><td>SECTION .data<br>SECTION .bss<br>SECTION .text</td><td>.data<br>.code</td></tr><tr><td>Data types</td><td>.byte<br>.word<br>.long<br>.qword</td><td>db<br>dw<br>dd<br>dq</td><td>BYTE<br>WORD<br>DWORD<br>QWORD</td></tr><tr><td>Repetition</td><td>identifier: .fill count, size, value</td><td>identifier: TIMES count type value</td><td>identidifier type count DUP [value]</td></tr><tr><td>Macro definition</td><td>.macro identifier arg1, arg 2<br>. . . <br>.endm</td><td>%macro identifier argument<br>. . args referenced as %1, %2<br>%endmacro</td><td>identifier MACRO arg1, arg2<br> . . . <br>ENDM</td></tr><tr><td>Macro usage</td><td>identifier param1, param2, etc...</td><td>identifier param1, param2, etc...</td><td>identifier param1, param2, etc...</td></tr><tr><td>Comment</td><td>% this is comment</td><td>; this is a comment</td><td>; this is a comment</td></tr><tr><td>32-bit _main exit routine for GAS/clang on MAC</td><td>;MAC<br>pushl $0<br>subl $4, %esp<br>movl $1, %eax<br>int $0x80<br><br>;Linux<br>mov $1, %eax<br>mov $0, %ebx<br>int $0x80</td><td>;MAC<br>push DWORD 0<br>sub esp, 4<br>mov eax, 1<br>int %0h<br><br>;Linux<br>mov eax, 1<br>mov ebx, 0<br>int %0h<br><br><br></td><td>;Windows<br><br>;declare before .data<br>ExitProcess PROTO,<br>dwExitCode:DWORD<br>. . .<br>;before _main ENDP<br>INVOKE ExitProcess, 0</td></tr><tr><td>64-bit _main exit routine for GAS/clang on MAC</td><td>;MAC<br>movq $0x2000001, %rax<br>movq $0, %rdi<br>syscall<br><br>;Linux<br>mov $60, %rax<br>xor %rdi, %rdi<br>syscall</td><td>;MAC<br>mov rax, 2000001h<br>mov rdi, 0<br>syscall<br><br>;Linux<br>mov rax, 60<br>xor rdi, rdi<br>syscall</td><td>;befor .data<br>extrn ExitProcess : proc<br><br>;befor _main ENDP<br>mov rcx, 0<br>call ExitProcess</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:paragraph -->
+<p>The above table has been derived form Appendix-A, 'Assembly Programming and Computer Architecture for Software Engineers' by Brian R. Hall and Kevin J. Slonka. </p>
+<!-- /wp:paragraph -->
